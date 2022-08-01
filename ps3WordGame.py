@@ -3,9 +3,9 @@
 # The 6.0001 Word Game
 # Created by: Kevin Luu <luuk> and Jenna Wiens <jwiens>
 #
-# Name          : <your name>
-# Collaborators : <your collaborators>
-# Time spent    : <total time>
+# Name          : <Siddharth Murali>
+# Collaborators : <Just me>
+# Time spent    : <start 31st Jul, 22 end:>
 
 import math
 import random
@@ -24,7 +24,7 @@ SCRABBLE_LETTER_VALUES = {
 # Helper code
 # (you don't need to understand this helper code)
 
-WORDLIST_FILENAME = "words.txt"
+WORDLIST_FILENAME = "wordsps3.txt"
 
 
 def load_words():
@@ -95,9 +95,17 @@ def get_word_score(word, n):
     returns: int >= 0
     """
 
-    pass  # TO DO... Remove this line when you implement this function
-
-
+    word = word.lower()
+    # print(word)
+    word_length = len(word)
+    component_1 = 0
+    for letter in word:
+        component_1 += SCRABBLE_LETTER_VALUES[letter]
+    component_2 = 7*word_length - 3*(n-word_length)
+    if component_2 < 1:
+        component_2 = 1
+    word_score = component_1*component_2
+    return word_score
 #
 # Make sure you understand how this function works and what it does!
 #
