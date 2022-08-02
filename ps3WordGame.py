@@ -185,14 +185,14 @@ def update_hand(hand, word):
     word = word.lower()
     updated_hand = hand.copy()
     for letter in word:
-        if letter in hand:
+        if letter in updated_hand:
             updated_hand[letter] -= 1
             if updated_hand[letter] == 0:
                 del (updated_hand[letter])
     # print(hand)
     return updated_hand
 
-print(update_hand({'a':1, 'q':1, 'l':2, 'm':1, 'u':1, 'i':1}, "b1nr4"))
+# print(update_hand({'a':1, 'q':1, 'l':2, 'm':1, 'u':1, 'i':1}, "aqllmuii"))
 #
 # Problem #3: Test word validity
 #
