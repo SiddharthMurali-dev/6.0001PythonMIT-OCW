@@ -94,8 +94,8 @@ def get_word_score(word, n):
     n: int >= 0
     returns: int >= 0
     """
-
     word = word.lower()
+    print(word)
     # print(word)
     word_length = len(word)
     component_1 = 0
@@ -185,6 +185,8 @@ def update_hand(hand, word):
     updated_hand = hand.copy()
     for letter in word:
         updated_hand[letter] -= 1
+        if updated_hand[letter] == 0:
+            del (updated_hand[letter])
     # print(hand)
     return updated_hand
 
