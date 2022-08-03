@@ -17,7 +17,7 @@ HAND_SIZE = 7
 
 SCRABBLE_LETTER_VALUES = {
     'a': 1, 'b': 3, 'c': 3, 'd': 2, 'e': 1, 'f': 4, 'g': 2, 'h': 4, 'i': 1, 'j': 8, 'k': 5, 'l': 1, 'm': 3, 'n': 1,
-    'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10
+    'o': 1, 'p': 3, 'q': 10, 'r': 1, 's': 1, 't': 1, 'u': 1, 'v': 4, 'w': 4, 'x': 8, 'y': 4, 'z': 10, '*':0
 }
 
 # -----------------------------------
@@ -151,6 +151,9 @@ def deal_hand(n):
     for i in range(num_vowels):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
+        if h == 0 and random.random() > 0.5:
+            h += 1
+            hand['*'] = hand.pop(x)
 
     for i in range(num_vowels, n):
         x = random.choice(CONSONANTS)
@@ -193,7 +196,7 @@ def update_hand(hand, word):
     return updated_hand
 
 # print(update_hand({'a':1, 'q':1, 'l':2, 'm':1, 'u':1, 'i':1}, "aqllmuii"))
-#
+
 # Problem #3: Test word validity
 #
 def is_valid_word(word, hand, word_list):
@@ -207,11 +210,33 @@ def is_valid_word(word, hand, word_list):
     word_list: list of lowercase strings
     returns: boolean
     """
+    word = word.lower()
+    len_word = len(word)
+    if '*' in word:
+        loc = word.find('*')
+        for v in VOWELS:
+            # print(v)
+            if loc != 0:
+                v_word = word[0:loc] + v + word[loc+1:len_word]
+                # print(v_word)
+            elif loc == 0:
+                v_word = v + word[1:len_word]
+            if v_word in word_list:
+                break
+            elif v == 'u' and v_word not in word_list:
+                return False
+    elif word not in word_list :
+        return False
+    updated_hand = hand.copy()
+    for letter in word:
+        if letter not in updated_hand.keys():
+            return False
+        elif letter in updated_hand.keys():
+            updated_hand = update_hand(updated_hand, letter)
+    return True
 
-    pass  # TO DO... Remove this line when you implement this function
+# print(is_valid_word('broth*r', {'b':1,'r':2,'o':2,'t':1,'h':1,'*':1}, ['brother', 'brroo']))
 
-
-#
 # Problem #5: Playing a hand
 #
 def calculate_handlen(hand):
