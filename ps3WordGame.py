@@ -147,7 +147,7 @@ def deal_hand(n):
 
     hand = {}
     num_vowels = int(math.ceil(n / 3))
-
+    h = 0
     for i in range(num_vowels):
         x = random.choice(VOWELS)
         hand[x] = hand.get(x, 0) + 1
@@ -235,7 +235,7 @@ def is_valid_word(word, hand, word_list):
             updated_hand = update_hand(updated_hand, letter)
     return True
 
-# print(is_valid_word('broth*r', {'b':1,'r':2,'o':2,'t':1,'h':1,'*':1}, ['brother', 'brroo']))
+# print(is_valid_word('broth*r', {'b':1,'r':2,'o':2,'t':1,'h':1,'*':1}, ['brothlr', 'brroo']))
 
 # Problem #5: Playing a hand
 #
