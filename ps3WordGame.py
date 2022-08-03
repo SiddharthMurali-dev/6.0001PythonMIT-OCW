@@ -246,9 +246,8 @@ def calculate_handlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-
-    pass  # TO DO... Remove this line when you implement this function
-
+    length_hand = len(hand)
+    return length_hand
 
 def play_hand(hand, word_list):
     """
@@ -282,15 +281,31 @@ def play_hand(hand, word_list):
 
     # BEGIN PSEUDOCODE <-- Remove this comment when you implement this function
     # Keep track of the total score
-
+    total_score = 0
     # As long as there are still letters left in the hand:
+    updated_hand = hand.copy()
+    length_hand = calculate_handlen(updated_hand)
+    while length_hand != 0:
+        display_hand(updated_hand)
+        word_input = input("Enter word, or '!!' to indicate that you are finished: ")
+        if word_input == "!!":
+            break
+        elif word_input != "!!":
+            validity_word = is_valid_word(word_input, updated_hand, word_list)
+            if validity_word is True :
+                word_score = get_word_score(word_input, length_hand)
+                total_score += word_score
+                print(word_input + " earned " + str(word_score) + " points. Total score = " + str(total_score))
+            elif validity_word is False :
+                print("Invalid input word! You have been administered a penalty.")
+            updated_hand = update_hand(updated_hand, word_input)
+            length_hand = calculate_handlen(updated_hand)
+    print("Hand Over! Your total score for this hand is " + str(total_score))
+    return total_score
 
     # Display the hand
-
     # Ask user for input
-
     # If the input is two exclamation points:
-
     # End the game (break out of the loop)
 
     # Otherwise (the input is not two exclamation points):
@@ -310,7 +325,7 @@ def play_hand(hand, word_list):
 
     # Return the total score as result of function
 
-
+# play_hand({'a':3, 'q':1, 'l':1, 'm':1, 'u':2, 'i':1}, ["alum", "lmq", "mui", "sober"])
 #
 # Problem #6: Playing a game
 #
@@ -327,7 +342,7 @@ def substitute_hand(hand, letter):
     should be different from user's choice, and should not be any of the letters
     already in the hand.
 
-    If user provide a letter not in the hand, the hand should be the same.
+    If user provides a letter not in the hand, the hand should be the same.
 
     Has no side effects: does not mutate hand.
 
@@ -343,7 +358,23 @@ def substitute_hand(hand, letter):
     returns: dictionary (string -> int)
     """
 
-    pass  # TO DO... Remove this line when you implement this function
+    letter_pool = VOWELS + CONSONANTS
+    if letter not in hand:
+        print("Letter not in hand.")
+        return hand
+    for l in hand.keys():
+        len_letter_pool = len(letter_pool)
+        index = letter_pool.find(l)
+        if index != 0:
+            letter_pool = letter_pool[0:index] + letter_pool[index+1:len_letter_pool]
+        elif index == 0:
+            letter_pool = letter_pool[1:len_letter_pool]
+    # print(letter_pool)
+    new_letter = random.choice(letter_pool)
+    hand[new_letter] = hand.pop(letter)
+    return hand
+
+# print(substitute_hand({'h':1, 'e':3, 'l':2, 'o':1}, 'e'))
 
 
 def play_game(word_list):
@@ -376,6 +407,20 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
+
+    no_hands = input("Enter total number of hands: ")
+    for n in range(no_hands):
+        hand = deal_hand(HAND_SIZE)
+        current_hand = display_hand(hand)
+        substitute = input("Would you like to substitute a letter (y/n)? ")
+        if substitute == 'y':
+            sub_letter = input("Which letter would you like to substitute? ")
+            hand = substitute_hand(hand, sub_letter)
+        play_hand(hand, word_list)
+        print("-----------------")
+        replay = print("Would you like to replay the hand (y/n) ?")
+        if replay == 'y':
+            display_hand(hand, word_list)
 
     print("play_game not implemented.")  # TO DO... Remove this line when you implement this function
 
