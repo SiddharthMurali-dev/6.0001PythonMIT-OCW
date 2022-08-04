@@ -154,10 +154,6 @@ def deal_hand(n):
         if h == 0 and random.random() > 0.5:
             h += 1
             hand['*'] = hand.pop(x)
-            # hand['*'] = 1
-        if i == num_vowels - 1 and h == 0:
-            h += 1
-            hand['*'] = hand.pop(x)
 
     for i in range(num_vowels, n):
         x = random.choice(CONSONANTS)
@@ -411,8 +407,8 @@ def play_game(word_list):
 
     word_list: list of lowercase strings
     """
-    total_score_all_hands = 0
-    no_hands = int(input("Enter total number of hands: "))
+
+    no_hands = input("Enter total number of hands: ")
     for n in range(no_hands):
         hand = deal_hand(HAND_SIZE)
         current_hand = display_hand(hand)
@@ -420,14 +416,11 @@ def play_game(word_list):
         if substitute == 'y':
             sub_letter = input("Which letter would you like to substitute? ")
             hand = substitute_hand(hand, sub_letter)
-        hand_score = play_hand(hand, word_list)
+        play_hand(hand, word_list)
         print("-----------------")
-        replay = input("Would you like to replay the hand (y/n)? ")
+        replay = print("Would you like to replay the hand (y/n) ?")
         if replay == 'y':
-            hand_score = play_hand(hand, word_list)
-        total_score_all_hands += hand_score
-        if n == no_hands - 1:
-            print("------------- \n Total Score for all hands = " + str(total_score_all_hands))
+            display_hand(hand, word_list)
 
     print("play_game not implemented.")  # TO DO... Remove this line when you implement this function
 
